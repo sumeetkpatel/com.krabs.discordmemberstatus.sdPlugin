@@ -1,0 +1,33 @@
+{
+    "Actions": [
+        {
+            "Icon": "resources/images/actionIcon",
+            "Name": "Discord Member Status",
+            "States": [
+                {
+                  "Image": "resources/images/actionDefaultImageOnline",
+                  "TitleAlignment": "bottom",
+                  "FontSize": "12"
+                }
+              ],
+            "SupportedInMultiActions": false,
+            "Tooltip": "Displays whether a member is online/offline on your Discord server with their profile avatar.",
+            "UUID": "com.krabs.discordMemberStatus.action"
+        }
+    ],
+    "SDKVersion": 2,
+    "Author": "Krabs",
+    "Category": "Krabs Gaming",
+    "CategoryIcon": "resources/images/categoryIcon",
+    "CodePath": "discordMemberStatus.html",
+    "PropertyInspectorPath": "discordMemberStatus_pi.html",
+    "Description": "Displays whether a member is online/offline on your Discord server with their profile avatar.",
+    "Name": "Discord Member Status",
+    "Icon": "resources/images/pluginIcon",
+    "URL": "https://www.krabs.me/streamdeck-plugins",
+    "Version": "1.0.1",
+    "OS": [
+        { "Platform": "windows", "MinimumVersion": "10" }
+    ],
+    "Software": { "MinimumVersion": "5.0" }
+}
