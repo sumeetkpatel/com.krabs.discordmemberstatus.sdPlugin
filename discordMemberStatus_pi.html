@@ -14,13 +14,13 @@
 <body>
   <div class="sdpi-wrapper">
     <div class="sdpi-heading"></div>
-    <div class="sdpi-item" id="id="required_text"">
+    <div class="sdpi-item" id="required_text">
         <div class="sdpi-item-label">Discord Server's JSON API URL</div>
         <input class="sdProperty" type="text" id="vKrabs_DiscordURL" value="" required oninput="setSettings()">
     </div>
 
     <div class="sdpi-heading"></div>
-    <div class="sdpi-item" id="id="required_text"">
+    <div class="sdpi-item" id="required_text">
         <div class="sdpi-item-label">Discord Member Name</div>
         <input class="sdProperty" type="text" id="vKrabs_DiscordMemberName" value="" required oninput="setSettings()">
     </div>
@@ -45,7 +45,12 @@
             <label for="vKrabs_Interval" class="rangeLabel"></label>
           </div>
         </div>
-        
+
+      <div class="sdpi-item hidden" id="required_text">
+          <div class="sdpi-item-label">Discord Avatar URL</div>
+          <input class="sdProperty" type="text" id="vKrabs_DiscordMemberAvatar" value="" oninput="setSettings()">
+      </div>
+
       <div class="sdpi-heading"></div>
         <details class="message">
             <summary>For setup instructions go to: <span class="linkspan" onclick="openWebsite()">https://www.krabs.me/streamdeck-plugins</span></summary>
