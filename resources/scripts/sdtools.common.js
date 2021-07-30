@@ -156,8 +156,6 @@ function setSettingsToPlugin(payload) {
             'payload': payload
         };
         websocket.send(JSON.stringify(json));
-        var event = new Event('settingsUpdated');
-        document.dispatchEvent(event);
     }
 }
 

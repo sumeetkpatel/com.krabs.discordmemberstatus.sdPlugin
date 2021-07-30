@@ -40,11 +40,10 @@
                     }
                     if (payload != null && payload.hasOwnProperty('vKrabs_DiscordMemberAvatar')) {
                       var vAvatarURL = payload['vKrabs_DiscordMemberAvatar'];
-                      //console.warn("avatar url in getdata: ", vMemberName, vAvatarURL);
                     }
                     var payload = settingsCache[context];
                     var vUserStatus = "offline"
-                    SendOutsideLoop(vMemberName, vUserStatus, vAvatarURL)
+                    SendOutsideLoop(vDiscordURL, vMemberName, vUserStatus, vAvatarURL)
                     async function getData() {
                         var payload = settingsCache[context];
                         if (payload != null && payload.hasOwnProperty('vKrabs_Interval')) {
@@ -59,60 +58,52 @@
                         }
                         if (payload != null && payload.hasOwnProperty('vKrabs_DiscordMemberAvatar')) {
                           var vAvatarURL = payload['vKrabs_DiscordMemberAvatar'];
-                          //console.warn("avatar url in getdata: ", vMemberName, vAvatarURL);
                         }
+                        var vUserStatus = "offline"
+                        SendOutsideLoop(vDiscordURL, vMemberName, vUserStatus, vAvatarURL)
+                        //console.log("Settings: ", vRefreshInterval, vDiscordURL, vMemberName, vAvatarURL, vUserStatus);
 
-                        console.log("Settings: ", vRefreshInterval, vDiscordURL, vMemberName, vAvatarURL, vUserStatus);
-//https://discordapp.com/api/guilds/420731340913115136/widget.json
-                        //var vUserStatus = "offline"
-                        //SendOutsideLoop(vMemberName, vUserStatus, vAvatarURL)
+                        //https://discordapp.com/api/guilds/420731340913115136/widget.json
+
                         const response = await fetch(vDiscordURL);
                         const u = await response.json();
                         for(const vUSER in u.members)
                           {
-                          /*if (vAvatarURL = null) {
-                            Set vKrabs_DiscordMemberAvatar
-                            var vAvatarURL = u.members[vUSER].avatar_url
-                            KrabsDiscordMemberStatus.sendValueToPlugin(vAvatarURL, vKrabs_DiscordMemberAvatar);
-                          }*/
                           var vUserStatus = u.members[vUSER].status
                           var vAvatarURL = u.members[vUSER].avatar_url
                           var vUserSelected = u.members[vUSER].username
-                          //console.log(vMemberName)
-                          //console.log(vAvatarURL)
                           if (vMemberName.toUpperCase() === vUserSelected.toUpperCase())
                         	  {
-                              console.log("name: ", vMemberName);
+                              /*console.log("name: ", vMemberName);
                               console.log("status: ", vUserStatus);
-                              console.log("avatar: ", vAvatarURL)
+                              console.log("avatar: ", vAvatarURL)*/
+                              console.log(vMemberName, vUserStatus, vAvatarURL)
                               SendOutsideLoop(vMemberName, vUserStatus, vAvatarURL)
                               var imageUrl = vAvatarURL;
                               if (vUserStatus == "online") {
                                 convertImgToBase64(imageUrl, function(base64Img){
                                 var vAvatarBase64 = base64Img;
                                 setImage(context, vAvatarBase64);
+                                KrabsDiscordMemberStatus.updateSettings(context, vDiscordURL, vMemberName, vRefreshInterval, imageUrl)
                                 });
                             } else if (vUserStatus = "idle") {
                                 convertImgToBase64Sepia(imageUrl, function(base64Img){
                                 var vAvatarBase64 = base64Img;
                                 setImage(context, vAvatarBase64);
+                                KrabsDiscordMemberStatus.updateSettings(context, vDiscordURL, vMemberName, vRefreshInterval, imageUrl)
                                 });
                             }
                           }
                       }
-
-                      //console.log("above function: ", vMemberName, vUserStatus, vAvatarURL)
-
-
                     }
-                    function SendOutsideLoop(vMemberName, vUserStatus, vAvatarURL){
-                      console.log("Outside loop: ", vMemberName, vUserStatus, vAvatarURL);
+                    function SendOutsideLoop(vDiscordURL, vMemberName, vUserStatus, vAvatarURL){
+                      //console.log("Outside loop: ", vDiscordURL, vMemberName, vUserStatus, vAvatarURL);
                       if (vUserStatus == "offline") {
-                        console.warn("Offline action would be performed: ", vMemberName)
-                        /*convertImgToBase64GrayScale(imageUrl, function(base64Img){
+                        console.warn("Offline action would be performed: ", vMemberName, vUserStatus)
+                        convertImgToBase64GrayScale(vAvatarURL, function(base64Img){
                         var vAvatarBase64 = base64Img;
                         setImage(context, vAvatarBase64);
-                      });*/
+                      });
                       }
                     }
                     getData();
@@ -128,7 +119,6 @@
                       if (payload != null && payload.hasOwnProperty('vKrabs_DiscordMemberName')) {
                         var vMemberName = payload['vKrabs_DiscordMemberName'];
                       }
-                      //console.log("refresh: ",vRefreshInterval)
                       setTimeout(run, vRefreshInterval * 1000);
                     }, vRefreshInterval * 1000);
                   },
@@ -163,6 +153,26 @@
                     settingsCache[context] = settings;
                     console.log("New Settings", settings);
                     console.log("New JSON", JSON.stringify(json));
+                },
+                updateSettings: function (context, vDiscordURL, vMemberName, vRefreshInterval, imageUrl) {
+                      let vPayload = {};
+                      vPayload.vKrabs_DiscordURL = vDiscordURL;
+                      vPayload.vKrabs_DiscordMemberName = vMemberName;
+                      vPayload.vKrabs_Interval = vRefreshInterval;
+                      vPayload.vKrabs_DiscordMemberAvatar = imageUrl;
+                      const json = {
+                          "event": "willAppear",
+                          "context": context,
+                          "payload": vPayload
+                      };
+                      websocket.send(JSON.stringify(json));
+                      /*console.warn("in Update settings:")
+                      console.warn("IUS Member Name: ", vMemberName)
+                      console.warn("IUS Avatar URL: ", imageUrl)
+                      console.warn("IUS Refresh Interval: ", vRefreshInterval)
+                      console.warn("IUS Refresh Discord URL: ", vDiscordURL)
+                      console.warn("IUS Settings Cache: ", settingsCache[context])
+                      console.warn("--------------------------------------------")*/
                 },
                 AddToSettings: function (context, newSettings) {
                   settingsCache[context]
@@ -237,21 +247,6 @@
                     websocket.send(JSON.stringify(json));
                 }
             }
-
-            // Sends one value to the sendToPlugin method
-            function sendValueToPlugin(context, value, param) {
-                    var json = {
-                        'action': actionInfo['action'],
-                        'event': 'sendToPlugin',
-                        'context': context,
-                        'payload': {
-                            [param]: value
-                        }
-                    };
-                    console.log("inside sendvalue: ", value, param)
-                    websocket.send(JSON.stringify(json));
-            }
-
             function setImage (context, vAvatarBase64) {
               var json = {
                   'event': 'setImage',
@@ -261,7 +256,6 @@
                       'target': DestinationEnum.HARDWARE_AND_SOFTWARE
                   }
                 };
-              //console.log("setImage: ", vAvatarBase64)
               websocket.send(JSON.stringify(json));
             }
 
