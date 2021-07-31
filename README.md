@@ -5,7 +5,7 @@ com.krabs.discordmemberstatus.sdPlugin
 
  Show individual member's status from your Discord server
 
-Visit https://www.krabs.me/streamdeck-plugins/discord-member-count for alternate Gaming Icon set and more information.
+Visit https://www.krabs.me/streamdeck-plugins/discord-member-status for more information.
 # Setup
 * Open Discord and right click on the server. Select Server Settings > Widget.
 
