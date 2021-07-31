@@ -1,12 +1,9 @@
 com.krabs.discordmemberstatus.sdPlugin
 # Streamdeck Discord Member Status
- Show individual member's status from your Discord server
  
 ![Image](https://i.postimg.cc/W3VtdqzX/Krabs-Discord-Member-Status.png)
 
-
-
-* Shows the number of members online or shows the number of members online in voice channels
+ Show individual member's status from your Discord server
 
 Visit https://www.krabs.me/streamdeck-plugins/discord-member-count for alternate Gaming Icon set and more information.
 # Setup
