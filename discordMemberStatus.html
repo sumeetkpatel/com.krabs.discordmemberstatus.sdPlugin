@@ -174,9 +174,9 @@
                       console.warn("IUS Settings Cache: ", settingsCache[context])
                       console.warn("--------------------------------------------")*/
                 },
-                AddToSettings: function (context, newSettings) {
+                /*AddToSettings: function (context, newSettings) {
                   settingsCache[context]
-                },
+                },*/
                 didReceiveSettings: function (context, payload) {
                   console.log("Did receive: ", settings)
                 }
@@ -192,7 +192,7 @@
               img.onload = function(){
                   canvas.height = img.height;
                   canvas.width = img.width;
-                  ctx.filter = 'grayscale(1) brightness(.25)';
+                  ctx.filter = 'grayscale(1) brightness(.55)';
                     ctx.drawImage(img,0,0);
                     var dataURL = canvas.toDataURL(outputFormat || 'image/png');
                     callback.call(this, dataURL);
