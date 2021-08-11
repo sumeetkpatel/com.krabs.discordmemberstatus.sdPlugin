@@ -1,7 +1,7 @@
 com.krabs.discordmemberstatus.sdPlugin
 # Streamdeck Discord Member Status
  
-![Image](https://i.postimg.cc/W3VtdqzX/Krabs-Discord-Member-Status.png)
+![Image](https://i.postimg.cc/6QjNPsQ3/Krabs-Discord-Member-Status-black.png)
 
  Show individual member's status from your Discord server
 
