@@ -77,7 +77,7 @@
                               /*console.log("name: ", vMemberName);
                               console.log("status: ", vUserStatus);
                               console.log("avatar: ", vAvatarURL)*/
-                              console.log(vMemberName, vUserStatus, vAvatarURL)
+                              //console.log(vMemberName, vUserStatus, vAvatarURL)
                               SendOutsideLoop(vMemberName, vUserStatus, vAvatarURL)
                               var imageUrl = vAvatarURL;
                               if (vUserStatus == "online") {
@@ -99,7 +99,7 @@
                     function SendOutsideLoop(vDiscordURL, vMemberName, vUserStatus, vAvatarURL){
                       //console.log("Outside loop: ", vDiscordURL, vMemberName, vUserStatus, vAvatarURL);
                       if (vUserStatus == "offline") {
-                        console.warn("Offline action would be performed: ", vMemberName, vUserStatus)
+                        //console.warn("Offline action would be performed: ", vMemberName, vUserStatus, vAvatarURL)
                         convertImgToBase64GrayScale(vAvatarURL, vMemberName, function(base64Img){
                         var vAvatarBase64 = base64Img;
                         setImage(context, vAvatarBase64);
@@ -161,7 +161,7 @@
                       vPayload.vKrabs_Interval = vRefreshInterval;
                       vPayload.vKrabs_DiscordMemberAvatar = imageUrl;
                       const json = {
-                          "event": "willAppear",
+                          "event": "setSettings",
                           "context": context,
                           "payload": vPayload
                       };
@@ -174,9 +174,9 @@
                       console.warn("IUS Settings Cache: ", settingsCache[context])
                       console.warn("--------------------------------------------")*/
                 },
-                /*AddToSettings: function (context, newSettings) {
+                AddToSettings: function (context, newSettings) {
                   settingsCache[context]
-                },*/
+                },
                 didReceiveSettings: function (context, payload) {
                   console.log("Did receive: ", settings)
                 }
@@ -291,7 +291,7 @@
                         let userDesiredState = jsonPayload["userDesiredState"];
                         KrabsDiscordMemberStatus.onKeyUp(context, settings, coordinates, userDesiredState);
                     } else if (event == "willAppear") {
-                        //let jsonPayload = jsonObj["payload"];
+                        let jsonPayload = jsonObj["payload"];
                         let settings = jsonPayload["settings"];
                         let coordinates = jsonPayload["coordinates"];
                         let userDesiredState = jsonPayload["userDesiredState"];
@@ -307,6 +307,10 @@
                       }
                     } else if (event == "didReceiveSettings") {
                         console.log("didReceiveSettings received payload: ", jsonPayload);
+                        if (jsonPayload != null && jsonPayload['settings'] != null) {
+                          KrabsDiscordMemberStatus.SetSettings(context, jsonPayload['settings']);
+                        }
+                    } else if (event == "setSettings") {
                         if (jsonPayload != null && jsonPayload['settings'] != null) {
                           KrabsDiscordMemberStatus.SetSettings(context, jsonPayload['settings']);
                         }
