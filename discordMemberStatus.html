@@ -47,7 +47,7 @@
                     }
                     if (payload != null && payload.hasOwnProperty('vKrabs_DiscordMemberName')) {
                       var vMemberName = payload['vKrabs_DiscordMemberName'];
-                      KrabsDiscordMemberStatus.SetTitle(context, vMemberName.substring(0,7));
+                      //KrabsDiscordMemberStatus.SetTitle(context, vMemberName.substring(0,7));
                     }
                     if (payload != null && payload.hasOwnProperty('vKrabs_DiscordMemberAvatar')) {
                       var vAvatarURL = payload['vKrabs_DiscordMemberAvatar'];
@@ -65,7 +65,7 @@
                         }
                         if (payload != null && payload.hasOwnProperty('vKrabs_DiscordMemberName')) {
                           var vMemberName = payload['vKrabs_DiscordMemberName'];
-                          KrabsDiscordMemberStatus.SetTitle(context, vMemberName.substring(0,7));
+                          //KrabsDiscordMemberStatus.SetTitle(context, vMemberName.substring(0,7));
                         }
                         if (payload != null && payload.hasOwnProperty('vKrabs_DiscordMemberAvatar')) {
                           var vAvatarURL = payload['vKrabs_DiscordMemberAvatar'];
@@ -141,6 +141,16 @@
                     */
                     console.log("onWillAppear context: ", context, " settings: ", settings);
                     settingsCache[context] = settings;
+                    var vShowTitle = settings['vKrabs_ShowTitle'];
+                    var vMemberName = settings['vKrabs_DiscordMemberName'];
+                    //console.warn("vShowTitle: ", vShowTitle)
+                    if (vShowTitle == false) {
+                      KrabsDiscordMemberStatus.SetTitle(context, "");
+                    } else if (vShowTitle == true) {
+                      KrabsDiscordMemberStatus.SetTitle(context, vMemberName.substring(0,7));
+                    } else if (vShowTitle == null) {
+                      KrabsDiscordMemberStatus.SetTitle(context, vMemberName.substring(0,7));
+                    }
                     this.fKrabs_GetData(context);
                 },
                 onWillDisappear: function (context, settings, coordinates) {
@@ -165,6 +175,13 @@
                     settingsCache[context] = settings;
                     console.log("New Settings", settings);
                     console.log("New JSON", JSON.stringify(json));
+                    var vShowTitle = settings['vKrabs_ShowTitle'];
+                    var vMemberName = settings['vKrabs_DiscordMemberName'];
+                    if (vShowTitle == false) {
+                      KrabsDiscordMemberStatus.SetTitle(context, "");
+                    } else if (vShowTitle == true) {
+                      KrabsDiscordMemberStatus.SetTitle(context, vMemberName.substring(0,7));
+                    }
                 },
                 updateSettings: function (context, vDiscordURL, vMemberName, vRefreshInterval, imageUrl) {
                       let vPayload = {};
