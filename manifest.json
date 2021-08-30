@@ -7,7 +7,7 @@
                 {
                   "Image": "resources/images/actionDefaultImage",
                   "TitleAlignment": "bottom",
-                  "FontSize": "12"
+                  "FontSize": "11"
                 }
               ],
             "SupportedInMultiActions": false,
