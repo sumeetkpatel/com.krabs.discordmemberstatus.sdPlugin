@@ -108,6 +108,7 @@
                           }
                       }
                     }
+
                     function SendOutsideLoop(vDiscordURL, vMemberName, vUserStatus, vAvatarURL){
                       //console.log("Outside loop: ", vDiscordURL, vMemberName, vUserStatus, vAvatarURL);
                       if (vUserStatus == "offline") {
@@ -115,6 +116,8 @@
                         convertImgToBase64GrayScale(vAvatarURL, vMemberName, function(base64Img){
                         var vAvatarBase64 = base64Img;
                         setImage(context, vAvatarBase64);
+
+                        
                       });
                       }
                     }
@@ -149,7 +152,8 @@
                     } else if (vShowTitle == true) {
                       KrabsDiscordMemberStatus.SetTitle(context, vMemberName.substring(0,7));
                     } else if (vShowTitle == null) {
-                      KrabsDiscordMemberStatus.SetTitle(context, vMemberName.substring(0,7));
+                      KrabsDiscordMemberStatus.SetTitle(context, "");
+                      //KrabsDiscordMemberStatus.SetTitle(context, vMemberName.substring(0,7));
                     }
                     this.fKrabs_GetData(context);
                 },
@@ -212,6 +216,17 @@
             };
 // End of let KrabsDiscordMemberStatus definition
 
+            function drawBorder(ctx, color){
+              //ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+              var width = 20;
+              ctx.beginPath();
+              ctx.lineWidth = width;
+              ctx.strokeStyle = color;
+              ctx.rect(0, 0, ctx.canvas.width, ctx.canvas.height);
+              ctx.stroke();
+            };
+
             function convertImgToBase64GrayScale(url, vMemberName, callback, outputFormat){
               var canvas = document.createElement('CANVAS');
               var ctx = canvas.getContext('2d');
@@ -221,15 +236,24 @@
               img.onload = function(){
                   canvas.height = img.height;
                   canvas.width = img.width;
-                  ctx.filter = 'grayscale(1) brightness(.55)';
+                  //ctx.filter = 'grayscale(1) brightness(.55)';
+                  ctx.filter = 'grayscale(1) brightness(.2)';
+
                     ctx.drawImage(img,0,0);
+
+                    drawBorder(ctx, "red");
+
                     var dataURL = canvas.toDataURL(outputFormat || 'image/png');
                     callback.call(this, dataURL);
+
+
                   // Clean up
                     canvas = null;
               };
               img.src = url;
             };
+
+
             function convertImgToBase64Sepia(url, callback, outputFormat){
               var canvas = document.createElement('CANVAS');
               var ctx = canvas.getContext('2d');
@@ -239,14 +263,20 @@
                   canvas.height = img.height;
                   canvas.width = img.width;
                   ctx.filter = 'sepia(.95)';
+
                     ctx.drawImage(img,0,0);
+
+                    drawBorder(ctx, "yellow");
+
                     var dataURL = canvas.toDataURL(outputFormat || 'image/png');
                     callback.call(this, dataURL);
+
                   // Clean up
                     canvas = null;
               };
               img.src = url;
             };
+
             function convertImgToBase64(url, callback, outputFormat){
               var canvas = document.createElement('CANVAS');
               var ctx = canvas.getContext('2d');
@@ -256,6 +286,9 @@
                   canvas.height = img.height;
                   canvas.width = img.width;
                     ctx.drawImage(img,0,0);
+
+                    drawBorder(ctx, 'green');
+
                     var dataURL = canvas.toDataURL(outputFormat || 'image/png');
                     callback.call(this, dataURL);
                   // Clean up
